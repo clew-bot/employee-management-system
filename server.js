@@ -27,7 +27,7 @@ const start = () => {
             "Exit"
         ]
     }).then(response => {
-        console.log(response.menu) {
+        console.log(response.menu) 
         switch (response.menu) {
             case "View all departments":
                 return getDepartments();
@@ -43,9 +43,34 @@ const start = () => {
                 return addEmployee();
             case "Update employee role":
                 return updateEmployeeRole();
-            case "Exit"
+            case "Exit":
                 return connection.end();
         }
-        }
+
+       
     })
+}
+
+const getDepartments = () => {
+    connection.query("SELECT * FROM department", (err, res) => {
+        if(err) throw err;
+        //console.log(res)
+        res.forEach(department => {
+            console.table(`ID: ${department.id} | Name: ${department.name}`)
+        })
+    });
+}
+//Using SQL to retrieve roles within the database //
+const getRoles = () => {
+// using a 'SQL Literal' in a sense to grab roles //
+    let query = 'SELECT roles.id, roles.title, roles.salary, department.name
+    AS department
+    FROM roles
+    INNER JOIN department
+    ON roles.department_id = department.id';
+
+    connection.query(query, (err, res) => {
+        if(err) throw err;
+        console.table(res)
+    });
 }
