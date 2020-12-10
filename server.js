@@ -74,3 +74,25 @@ const getRoles = () => {
         console.table(res)
     });
 }
+
+const getEmployees = () => {
+    const query = `SELECT * FROM employee`
+    connection.query(query, (err, res) => {
+        if(err) throw err;
+        console.table(res)
+    });
+}
+
+const addDepartment = () => {
+    inquirer.prompt({
+        name: "department",
+        type: "input",
+        message: "What is the name of the new department?"
+    }).then(answer => {
+        const query = `INSERT INTO department (name) VALUES ( ? )`;
+        connection.query(query, answer.department, (err, res) => {
+            console.table(`Successfully added department ${(answer.department)}`)
+        })
+        viewDepartments();
+    })
+}
