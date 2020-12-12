@@ -63,11 +63,11 @@ const getDepartments = () => {
 //Using SQL to retrieve roles within the database //
 const getRoles = () => {
 // using a 'SQL Literal' in a sense to grab roles //
-    let query = 'SELECT roles.id, roles.title, roles.salary, department.name
+    let query = `SELECT roles.id, roles.title, roles.salary, department.name
     AS department
     FROM roles
     INNER JOIN department
-    ON roles.department_id = department.id';
+    ON roles.department_id = department.id`;
 
     connection.query(query, (err, res) => {
         if(err) throw err;
@@ -118,5 +118,27 @@ const addRole = () => {
         console.table(`Successfully added the ${(answer.title)} role.`)
     })
     viewRoles();
+})
+}
+
+const addEmployee = () => {
+    return inquirer.prompt([{
+        name: "first_name",
+        type: "input",
+        message: "What is the employee's first name?",
+    }, {
+        name: "last_name",
+        type: "input",
+        message: "What is the employee's first name?"
+    }, {
+        name: "role_id",
+        type: "number",
+        message: "What role does the employee have?",
+    }
+]).then(answer => {
+    let query = "INSERT INTO employee (first_name, last_name, role_id) VALUES ( ?, ?, ? )";
+    connection.query(query, [answer.first_name, answer.last_name, answer.role_id], (err, res) => {
+        console.table("Successfully added the: employee.")
+    })
 })
 }
