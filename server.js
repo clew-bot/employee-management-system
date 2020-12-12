@@ -96,3 +96,27 @@ const addDepartment = () => {
         viewDepartments();
     })
 }
+
+const addRole = () => {
+    return inquirer.prompt([{
+        name: "title",
+        type: "input",
+        message: "What is the title of the new role?"
+    },
+{
+    name: "salary",
+    type: "number",
+    message: "What is the salary of the new role?",
+},{
+    name: "department",
+    type: "number",
+    message: "Which department does this role fall under?",
+}, 
+]),then(answer => {
+    let query = "INSERT INTO roles (title, salary, department_id) VALUES ( ?, ?, ? )";
+    connection.query(query, [answer.title, answer.salary, department_id], (err, res) => {
+        console.table(`Successfully added the ${(answer.title)} role.`)
+    })
+    viewRoles();
+})
+}
