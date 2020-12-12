@@ -138,7 +138,7 @@ const addEmployee = () => {
 ]).then(answer => {
     let query = "INSERT INTO employee (first_name, last_name, role_id) VALUES ( ?, ?, ? )";
     connection.query(query, [answer.first_name, answer.last_name, answer.role_id], (err, res) => {
-        console.table("Successfully added the: employee.")
+        console.table(`Successfully added the: employee.`)
     })
 })
 }
