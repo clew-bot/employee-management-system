@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
     database: "employee_db"
 });
 
-const start = () => {
+const init = () => {
     return inquirer.prompt({
         name: "menu",
         type: "list",
@@ -23,7 +23,6 @@ const start = () => {
             "Add a department",
             "Add a role",
             "Add an employee",
-            "Update employee role",
             "Exit"
         ]
     }).then(response => {
@@ -39,10 +38,8 @@ const start = () => {
                 return addDepartment();
             case "Add a role":
                 return addRole();
-            case "Add an employee role":
+            case "Add an employee":
                 return addEmployee();
-            case "Update employee role":
-                return updateEmployeeRole();
             case "Exit":
                 return connection.end();
         }
@@ -93,7 +90,7 @@ const addDepartment = () => {
         connection.query(query, answer.department, (err, res) => {
             console.table(`Successfully added department ${(answer.department)}`)
         })
-        viewDepartments();
+        getDepartments();
     })
 }
 
@@ -112,12 +109,12 @@ const addRole = () => {
     type: "number",
     message: "Which department does this role fall under?",
 }, 
-]),then(answer => {
+]).then(answer => {
     let query = "INSERT INTO roles (title, salary, department_id) VALUES ( ?, ?, ? )";
-    connection.query(query, [answer.title, answer.salary, department_id], (err, res) => {
+    connection.query(query, [answer.title, answer.salary, answer.department], (err, res) => {
         console.table(`Successfully added the ${(answer.title)} role.`)
     })
-    viewRoles();
+    getRoles();
 })
 }
 
@@ -129,7 +126,7 @@ const addEmployee = () => {
     }, {
         name: "last_name",
         type: "input",
-        message: "What is the employee's first name?"
+        message: "What is the employee's first name?",
     }, {
         name: "role_id",
         type: "number",
@@ -148,4 +145,4 @@ connection.connect(function(err){
     console.log("connected as id " + connection.threadId);
 });
 
-start();
+init();
