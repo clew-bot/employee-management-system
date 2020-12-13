@@ -126,7 +126,7 @@ const addEmployee = () => {
     }, {
         name: "last_name",
         type: "input",
-        message: "What is the employee's first name?",
+        message: "What is the employee's last name?",
     }, {
         name: "role_id",
         type: "number",
